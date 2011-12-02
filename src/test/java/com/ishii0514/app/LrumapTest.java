@@ -116,5 +116,21 @@ public class LrumapTest
 
      lru.ModifySize(-1);
     }
+    
+    @Test
+    public void testDeleteOldData()
+    {
+     Lrumap<String, String> lru = new Lrumap<String, String>(2);
+     lru.put("A","iii");
+     lru.put("B", "kkk");
+
+     try {
+		Thread.sleep(4000);
+	} catch (InterruptedException e) {
+		// TODO 自動生成された catch ブロック
+		e.printStackTrace();
+	}
+     assertNull(lru.get("B"));
+    }
 
 }

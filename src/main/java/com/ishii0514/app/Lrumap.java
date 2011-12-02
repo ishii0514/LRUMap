@@ -36,10 +36,8 @@ public void put(K key, V value) {
 }
 
 public V get(K key) {
-	int num = history.indexOf(key);
-	if (num != -1)
+	if (history.remove(key))
 	{
-		history.remove(num);
 		history.add(key);
 	}
 	return datamap.get(key);
