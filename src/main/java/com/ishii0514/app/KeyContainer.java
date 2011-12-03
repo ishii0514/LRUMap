@@ -11,6 +11,8 @@ public class KeyContainer<K> {
 		key = in_key;
 		time = System.currentTimeMillis();
 	}
+	
+	@SuppressWarnings("unchecked")
 	public boolean equals(Object o)
 	{
 		return (o instanceof KeyContainer) && key.equals(((KeyContainer<K>)o).getKey());

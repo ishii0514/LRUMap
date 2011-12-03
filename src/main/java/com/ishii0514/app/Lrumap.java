@@ -43,10 +43,9 @@ int maxSize()
 public void put(K key, V value) {
 	//古いデータの削除
 	removeOldData(System.currentTimeMillis());
-	
 	//重複を防ぐため削除しておく
 	remove(key);
-	
+
 	datamap.put(key, value);
 	lrulist.add(new KeyContainer<K>(key));
 	checkSize();
@@ -66,12 +65,16 @@ public V get(K key) {
 public void ModifySize(int in_size) {
 	if (in_size <= 0)
 		throw new IllegalArgumentException("illegal size.[" + in_size + "]");
-	
 	size=in_size;
 	checkSize();
 }
 
-//サイズが大きかったら削除
+//指定したキーのデータを削除
+private void remove(K key){
+		datamap.remove(key);
+		lrulist.remove(new KeyContainer<K>(key));
+}
+//sizeと同じになるまで要素を削除
 private void checkSize()
 {
 	if (lrulist.size() > size)
@@ -80,13 +83,6 @@ private void checkSize()
 		checkSize();
 	}
 }
-
-//指定したキーのデータを削除
-private void remove(K key){
-		datamap.remove(key);
-		lrulist.remove(new KeyContainer<K>(key));
-}
-
 //古いデータを削除
 private void removeOldData(long now){
 	if(lrulist.size() == 0)
