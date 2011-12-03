@@ -6,10 +6,10 @@ public class KeyContainer<K> {
 	private K key;
 	private long time;
 	
-	public KeyContainer(K in_key)
+	public KeyContainer(K key)
 	{
-		key = in_key;
-		time = System.currentTimeMillis();
+		this.key = key;
+		this.time = System.currentTimeMillis();
 	}
 	
 	@SuppressWarnings("unchecked")
