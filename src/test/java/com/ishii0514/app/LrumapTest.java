@@ -120,17 +120,79 @@ public class LrumapTest
     @Test
     public void testDeleteOldData()
     {
-     Lrumap<String, String> lru = new Lrumap<String, String>(2);
-     lru.put("A","iii");
-     lru.put("B", "kkk");
-
-     try {
-		Thread.sleep(4000);
-	} catch (InterruptedException e) {
-		// TODO 自動生成された catch ブロック
-		e.printStackTrace();
-	}
-     assertNull(lru.get("B"));
+    	Lrumap<String, String> lru = new Lrumap<String, String>(2);
+    	lru.put("A","iii");
+    	lru.put("B", "kkk");
+    	try {
+    		Thread.sleep(2000);
+    	} catch (InterruptedException e) {
+    		// TODO 自動生成された catch ブロック
+    		e.printStackTrace();
+    	}
+    	//残っている
+    	assertEquals("iii",lru.get("A"));
+    	assertEquals("kkk",lru.get("B"));
+    	
+    	try {
+    		Thread.sleep(4000);
+    	} catch (InterruptedException e) {
+    		// TODO 自動生成された catch ブロック
+    		e.printStackTrace();
+    	}
+    	assertNull(lru.get("A"));
+    	assertNull(lru.get("B"));
+    }
+    @Test
+    public void testDeleteOldDataWithInterval()
+    {
+    	//interaval 1sec
+    	Lrumap<String, String> lru = new Lrumap<String, String>(2,1000);
+    	lru.put("A","iii");
+    	lru.put("B", "kkk");
+    	try {
+    		Thread.sleep(500);
+    	} catch (InterruptedException e) {
+    		// TODO 自動生成された catch ブロック
+    		e.printStackTrace();
+    	}
+    	//残っている
+    	assertEquals("iii",lru.get("A"));
+    	assertEquals("kkk",lru.get("B"));
+    	
+    	try {
+    		Thread.sleep(1500);
+    	} catch (InterruptedException e) {
+    		// TODO 自動生成された catch ブロック
+    		e.printStackTrace();
+    	}
+    	assertNull(lru.get("A"));
+    	assertNull(lru.get("B"));
+    }
+    @Test
+    public void testDeletePartialOldData()
+    {
+    	//一部のデータのみ消える
+    	//interaval 1sec
+    	Lrumap<String, String> lru = new Lrumap<String, String>(2,1000);
+    	lru.put("A","iii");
+    	lru.put("B", "kkk");
+    	try {
+    		Thread.sleep(700);
+    	} catch (InterruptedException e) {
+    		// TODO 自動生成された catch ブロック
+    		e.printStackTrace();
+    	}
+    	//残っている
+    	assertEquals("iii",lru.get("A"));
+    	try {
+    		Thread.sleep(700);
+    	} catch (InterruptedException e) {
+    		// TODO 自動生成された catch ブロック
+    		e.printStackTrace();
+    	}
+    	//Bだけ消える
+    	assertNull(lru.get("B"));
+    	assertEquals("iii",lru.get("A"));
     }
 
 }
